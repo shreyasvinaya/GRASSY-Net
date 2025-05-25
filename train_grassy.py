@@ -32,6 +32,8 @@ if __name__ == '__main__':
 
     parser.add_argument('--alpha', default=0.01, type=float)
     parser.add_argument('--beta', default=0.0005, type=float)
+    parser.add_argument('--gamma', default=0.01, type=float, help="Weight for the contrastive loss component.")
+    parser.add_argument('--contrastive_margin', default=0.5, type=float, help="Margin for the contrastive loss.")
     parser.add_argument('--n_epochs', default=100, type=int)
     parser.add_argument('--len_epoch', default=None)
 
