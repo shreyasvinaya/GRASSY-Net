@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+from models.LEGS_module import Scatter
+import torch
 
 TRANCH_NAME = 'BBAB'
 
