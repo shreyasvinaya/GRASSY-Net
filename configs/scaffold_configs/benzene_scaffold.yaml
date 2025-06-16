@@ -1,0 +1,32 @@
+# Benzene Scaffold Configuration
+# This configuration forces the model to generate molecules containing a benzene ring
+
+# Target scaffold in SMARTS format
+target_scaffold: "c1ccccc1"
+
+# Constraint enforcement strength (0.0 = no constraint, 1.0 = strict enforcement)
+constraint_strength: 1.0
+
+# Generation parameters
+generation_params:
+  temperature: 1.0           # Sampling temperature for diversity
+  num_samples: 10           # Number of molecules to generate per latent code
+  enforce_constraint: true  # Whether to enforce scaffold constraint during generation
+
+# Model parameters specific to scaffold generation
+model_params:
+  scaffold_dim: 128         # Dimension of scaffold embeddings
+  hidden_dim: 256          # Hidden layer dimension for constraint networks
+  epsilon: 0.1             # Weight for scaffold constraint loss
+
+# Validation parameters
+validation:
+  check_compliance: true    # Whether to validate scaffold compliance
+  verbose_validation: false # Whether to print detailed validation results
+
+# Additional metadata
+metadata:
+  description: "Benzene ring scaffold for aromatic compound generation"
+  created_by: "Enhanced GRASSY"
+  scaffold_name: "benzene"
+  scaffold_type: "aromatic" 

@@ -1,0 +1,25 @@
+{
+  "target_scaffold": "c1ccncc1",
+  "constraint_strength": 0.9,
+  "generation_params": {
+    "temperature": 1.2,
+    "num_samples": 15,
+    "enforce_constraint": true
+  },
+  "model_params": {
+    "scaffold_dim": 128,
+    "hidden_dim": 256,
+    "epsilon": 0.15
+  },
+  "validation": {
+    "check_compliance": true,
+    "verbose_validation": true
+  },
+  "metadata": {
+    "description": "Pyridine ring scaffold for nitrogen-containing heterocyclic compound generation",
+    "created_by": "Enhanced GRASSY",
+    "scaffold_name": "pyridine",
+    "scaffold_type": "heterocyclic",
+    "heteroatoms": ["N"]
+  }
+} 
