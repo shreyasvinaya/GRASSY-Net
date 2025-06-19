@@ -17,7 +17,17 @@ This repository extends the original GRASSY-Net (Geometric Scattering) model wit
 - Randomly masks portions of molecular features and reconstructs them using scaffold information
 - Helps the model learn better scaffold-aware molecular representations
 
-### 3. Scaffold-Constrained Generation (NEW!)
+### 2.1. Graph Masked Reconstruction
+- Advanced graph-based masked reconstruction using Graph Neural Networks (GNNs)
+- **Node-level masking**: Randomly masks 15% of graph nodes with learnable mask tokens
+- **Feature-level masking**: Masks 10% of node features within non-masked nodes
+- **Graph Convolutional Encoding**: Uses GCN layers with batch normalization for graph encoding
+- **Attention-based Scaffold Integration**: Combines graph embeddings with scaffold information via multi-head attention
+- **Edge Feature Reconstruction**: Reconstructs both node and edge features when available
+- **Fallback Support**: Gracefully handles non-graph data with tensor-based implementation
+- Enables more sophisticated understanding of molecular graph structure and chemical bonds
+
+### 3. Scaffold-Constrained Generation
 - Forces the model to generate molecules that always contain a specific scaffold structure
 - Reads target scaffold configurations from YAML/JSON files
 - Supports real-time scaffold switching during inference
@@ -45,8 +55,10 @@ GRASSY-Net/
 │   ├── train_grassy.py           # Original training script
 │   └── train_enhanced_grassy.py  # Enhanced training script
 ├── examples/
-│   └── demo_enhanced_grassy.py   # Demonstration script
-└── README.md                     # This file
+│   ├── demo_enhanced_grassy.py                  # Demonstration script for enhanced features
+│   ├── demo_scaffold_constrained_generation.py  # Scaffold generation demo
+│   └── demo_graph_masked_reconstruction.py      # Graph reconstruction demo 
+└── README.md                                    # This file
 ```
 
 ## 🚀 Quick Start
@@ -122,7 +134,14 @@ python examples/demo_scaffold_constrained_generation.py \
     --n_epochs 15
 ```
 
-#### 5. Original GRASSY Model (Backward Compatibility)
+#### 5. Graph Masked Reconstruction Demo
+
+```bash
+# Run the graph reconstruction demo with sample molecular data
+python examples/demo_graph_masked_reconstruction.py
+```
+
+#### 6. Original GRASSY Model (Backward Compatibility)
 
 ```bash
 # Train original model on ZINC data
@@ -223,9 +242,16 @@ beta = 0.0005     # KL divergence weight
 gamma = 0.1       # Contrastive loss weight
 delta = 0.1       # Masked reconstruction loss weight
 epsilon = 0.1     # Scaffold constraint loss weight
+zeta = 0.1        # Graph reconstruction loss weight 
 scaffold_dim = 128    # Scaffold embedding dimension
 contrastive_margin = 1.0
 contrastive_temperature = 0.07
+
+# Graph reconstruction parameters 
+use_graph_reconstruction = True  # Enable graph-based masked reconstruction
+node_feature_dim = 10           # Number of node features in molecular graphs
+edge_feature_dim = 3            # Number of edge features
+num_gnn_layers = 3              # Number of GNN layers
 ```
 
 ### Training Options
@@ -259,12 +285,20 @@ contrastive_temperature = 0.07
    - Fuses original molecular embeddings with scaffold information
    - Reconstructs masked features using both molecular and scaffold context
 
+4. **GraphMaskedReconstructor Module**
+   - Advanced GNN-based reconstruction for molecular graph data
+   - Node-level masking with learnable mask tokens
+   - Multi-layer Graph Convolutional Networks with batch normalization
+   - Multi-head attention for scaffold-graph integration
+   - Reconstructs both node features and edge attributes
+   - Automatic fallback to tensor-based processing when PyTorch Geometric unavailable
+
 ### Loss Function
 
 The total loss combines multiple components:
 
 ```
-Total Loss = Reconstruction Loss + α×Regression Loss + β×KL Loss + γ×Contrastive Loss + δ×Masked Reconstruction Loss + ε×Scaffold Constraint Loss
+Total Loss = Reconstruction Loss + α×Regression Loss + β×KL Loss + γ×Contrastive Loss + δ×Masked Reconstruction Loss + ε×Scaffold Constraint Loss + ζ×Graph Reconstruction Loss
 ```
 
 Where:
@@ -274,6 +308,7 @@ Where:
 - **Contrastive Loss**: Toxicity-based contrastive learning
 - **Masked Reconstruction Loss**: Scaffold-conditioned reconstruction
 - **Scaffold Constraint Loss**: Forces generation of molecules with specific scaffolds
+- **Graph Reconstruction Loss**: GNN-based reconstruction of masked graph nodes and features
 
 ## 📊 Results and Analysis
 
